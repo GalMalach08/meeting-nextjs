@@ -1,7 +1,7 @@
 import MettupDetail from "../components/meetups/MeetupDetail";
 import { MongoClient, ObjectId } from "mongodb";
 import Head from "next/head";
-const SingleMeetup = ({ meetup }) => {
+const SingleMeetup = ({ meetup, meetups }) => {
   return (
     <>
       <Head>
@@ -19,20 +19,18 @@ const SingleMeetup = ({ meetup }) => {
 };
 
 export const getStaticPaths = async () => {
+  const client = await MongoClient.connect(
+    "mongodb+srv://galmalach:1233212@cluster0.aa6nqor.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+  const meetupsCollection = db.collection("meetups");
+  const meetups = await meetupsCollection.find().toArray();
+  client.close();
   return {
-    fallback: false,
-    paths: [
-      {
-        params: {
-          meetupId: "62ab06de301859697f891bd6",
-        },
-      },
-      {
-        params: {
-          meetupId: "62ab05b6301859697f891bd5",
-        },
-      },
-    ],
+    fallback: "blocking", // the list might be change
+    paths: meetups.map((meetup) => ({
+      params: { meetupId: meetup._id.toString() },
+    })),
   };
 };
 

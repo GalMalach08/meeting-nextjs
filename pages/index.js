@@ -7,6 +7,7 @@ const HomePage = (props) => {
     <>
       <Head>
         <title>React meetups</title>
+        <meta name="description" content="huge list of highly react meetups" />
       </Head>
       <MeetupList meetups={props.meetups} />;
     </>
@@ -46,7 +47,7 @@ export const getStaticProps = async () => {
         _id: meetup._id.toString(),
       })),
 
-      revalidate: 10,
+      revalidate: 1,
     },
   };
 };
