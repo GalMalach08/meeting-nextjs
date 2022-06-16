@@ -29,7 +29,7 @@ const HomePage = (props) => {
 // };
 
 // Running on the build proccess
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   // fecth data from api
 
   const client = await MongoClient.connect(
